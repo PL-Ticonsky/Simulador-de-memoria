@@ -1,4 +1,12 @@
-# MemLab 16 MiB
+<h1 align="center">MemLab 16 MiB</h1>
+
+<p align="center">Simulador de gestión de memoria principal con particiones, segmentación, paginación y visualización de fragmentación.</p>
+
+<p align="center">
+  <img src="https://img.shields.io/badge/Proyecto-HTML%20%C2%B7%20CSS%20%C2%B7%20JavaScript-20484e" alt="HTML · CSS · JavaScript">
+</p>
+
+[Manual de usuario](entregables/manual_usuario.pdf) · [Manual técnico](entregables/manual_tecnico.pdf) · [Informe final](entregables/informe_final.pdf)
 
 Simulador interactivo de **gestión de memoria principal** sobre un espacio
 direccionable de 16 MiB (`2^24` bytes, `0x000000`–`0xFFFFFF`), pensado como
