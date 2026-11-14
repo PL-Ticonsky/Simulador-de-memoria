@@ -3,6 +3,10 @@
 <p align="center">Simulador de gestión de memoria principal con particiones, segmentación, paginación y visualización de fragmentación.</p>
 
 <p align="center">
+  <a href="LICENSE"><img src="https://img.shields.io/badge/Licencia-MIT-184b3a" alt="Licencia MIT"></a>
+</p>
+
+<p align="center">
   <img src="https://img.shields.io/badge/Proyecto-HTML%20%C2%B7%20CSS%20%C2%B7%20JavaScript-20484e" alt="HTML · CSS · JavaScript">
 </p>
 
