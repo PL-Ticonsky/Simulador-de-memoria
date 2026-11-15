@@ -15,6 +15,18 @@ Mapa de memoria y catálogo tras cargar el escenario de fragmentación. Haz clic
 
 <a href="docs/memlab-clasico.png"><img src="docs/memlab-clasico.png" width="680" alt="MemLab en blanco y negro con métricas, mapa físico, bloques asignados y catálogo de programas"></a>
 
+## Cómo se asigna la memoria
+
+El modo elegido define la unidad de asignación: una partición, varios segmentos o un conjunto de marcos.
+
+```mermaid
+flowchart LR
+    A["Modo y configuración"] --> C["Gestor de memoria"]
+    B["Cargar o liberar un programa"] --> C
+    C --> D["Mapa físico de 16 MiB"]
+    C --> E["Métricas y bitácora"]
+```
+
 ## Inicio rápido
 
 1. Clona o descarga el repositorio y abre `index.html` en el navegador. Usa HTML, CSS y JavaScript, sin instalación ni compilación.
