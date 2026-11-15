@@ -1,52 +1,41 @@
-<h1 align="center">MemLab 16 MiB</h1>
+# MemLab · Simulador de memoria
 
-<p align="center">Simulador de gestión de memoria principal con particiones, segmentación, paginación y visualización de fragmentación.</p>
+Explora cómo un sistema operativo reparte **16 MiB de memoria**. Carga programas, observa dónde se ubican y libera instancias para ver cómo aparecen huecos. La interfaz toma como referencia las consolas clásicas de Windows y pone el mapa físico en primer plano.
 
-<p align="center">
-  <a href="LICENSE"><img src="https://img.shields.io/badge/Licencia-MIT-184b3a" alt="Licencia MIT"></a>
-</p>
+![HTML](https://img.shields.io/badge/HTML-Interfaz-333333)
+![CSS](https://img.shields.io/badge/CSS-Consola%20cl%C3%A1sica-555555)
+![JavaScript](https://img.shields.io/badge/JavaScript-Simulaci%C3%B3n-333333)
+[![Licencia MIT](https://img.shields.io/badge/Licencia-MIT-555555)](LICENSE)
 
-<p align="center">
-  <img src="https://img.shields.io/badge/Proyecto-HTML%20%C2%B7%20CSS%20%C2%B7%20JavaScript-20484e" alt="HTML · CSS · JavaScript">
-</p>
+[Inicio rápido](#inicio-rápido) · [Manual de usuario](entregables/manual_usuario.pdf) · [Manual técnico](entregables/manual_tecnico.pdf) · [Informe final](entregables/informe_final.pdf)
 
-[Manual de usuario](entregables/manual_usuario.pdf) · [Manual técnico](entregables/manual_tecnico.pdf) · [Informe final](entregables/informe_final.pdf)
+## Vista previa
 
-Simulador interactivo de **gestión de memoria principal** sobre un espacio
-direccionable de 16 MiB (`2^24` bytes, `0x000000`–`0xFFFFFF`), pensado como
-material de estudio para sistemas operativos: particiones fijas, variables
-y dinámicas, segmentación, paginación, algoritmos de ajuste, fragmentación interna/externa
-y compactación.
+Mapa de memoria y catálogo tras cargar el escenario de fragmentación. Haz clic en la captura para ampliarla.
 
-No tiene backend ni dependencias de build: es HTML + CSS + JavaScript
-vainilla. Basta con abrir `index.html` en un navegador.
+<a href="docs/memlab-clasico.png"><img src="docs/memlab-clasico.png" width="680" alt="MemLab en blanco y negro con métricas, mapa físico, bloques asignados y catálogo de programas"></a>
 
-## Estructura del proyecto
+## Inicio rápido
 
-```
-memlab/
-├── index.html      Markup y metadatos únicamente
-├── css/
-│   └── style.css    Toda la hoja de estilos (comentada por sección)
-├── js/
-│   └── script.js    Toda la lógica del simulador (comentada por sección)
-└── README.md        Este archivo
-```
+1. Clona o descarga el repositorio y abre `index.html` en el navegador. Usa HTML, CSS y JavaScript, sin instalación ni compilación.
+2. Escoge un modo y abre **Configuración y asignación** si quieres ajustar sus parámetros.
+3. Carga una instancia en **Programas simulados** o ejecuta el escenario de la barra de acciones.
+4. Selecciona un bloque en el mapa y abre **Bloque seleccionado** para consultar sus direcciones. La **Bitácora** explica cada asignación, liberación y rechazo.
 
-La documentación detallada de *qué hace cada función* vive como
-comentarios dentro de `style.css` y `script.js`, no aquí — este README
-solo explica el panorama general y cómo usarlo.
+## Modos de simulación
 
-## Cómo ejecutarlo
+| Modo | Qué puedes observar |
+| --- | --- |
+| Fijas | Particiones del mismo tamaño y espacio perdido dentro de cada asignación. |
+| Variables | Particiones predefinidas de tamaños distintos y el efecto del algoritmo de ajuste. |
+| Dinámicas | Huecos según el tamaño de cada programa y el efecto de la compactación. |
+| Segmentación | Partes de un programa en direcciones físicas separadas. |
+| Paginación | Páginas lógicas en marcos físicos y traducción de direcciones. |
 
-No requiere servidor ni instalación:
+<details>
+<summary>Ver las reglas de asignación en detalle</summary>
 
-1. Descarga o clona el repositorio.
-2. Abre `index.html` con doble clic, o sírvelo con cualquier servidor
-   estático (por ejemplo `python3 -m http.server` desde la carpeta del
-   proyecto, o publicándolo con **GitHub Pages** apuntando a `main`).
-
-## Qué simula
+## Cómo funcionan los cinco modos
 
 El sistema modela 16 MiB de memoria física, de los cuales una porción
 inicial (configurable: 1, 2 o 4 MiB) está reservada para el sistema
@@ -155,40 +144,17 @@ continúa después de una instancia que sigue activa, mostrando páginas
 físicamente separadas. El catálogo se conserva y las operaciones quedan
 en la bitácora.
 
-## Elementos de la interfaz
+</details>
 
-- **Mapa de memoria**: representa los 16 MiB como una columna de bloques
-  apilados, cada uno con una altura proporcional a su tamaño real. Haz
-  clic en un bloque para ver su rango de direcciones y, si está ocupado,
-  el desglose interno de sus cuatro categorías en memoria contigua. En
-  segmentación, señala los seis bloques de un programa seleccionado.
-- **KPIs**: utilización de memoria, fragmentación interna, fragmentación
-  externa o espacio libre disperso, tamaño del mayor bloque libre y
-  cantidad de instancias cargadas. En paginación se muestran marcos
-  totales, reservados, ocupados y libres, junto con memoria lógica y física.
-- **Programas simulados**: catálogo de 8 programas de ejemplo, ampliable
-  con programas propios. El catálogo permite abrir tantas instancias
-  como admita la memoria. Debajo aparecen las instancias cargadas, cada
-  una con su nombre numerado y su propio botón **Eliminar**.
-- **Bitácora**: registro cronológico de toda acción relevante al usar
-  el simulador — asignación, liberación, fusión de huecos contiguos,
-  rechazo, compactación, cambios de configuración e inspección de
-  bloques — donde cada línea explica qué ocurrió y, cuando corresponde,
-  por qué (qué regla o condición del gestor lo motivó). Pensada como
-  material de trazabilidad: se puede reconstruir, paso a paso, el
-  razonamiento detrás de cada decisión de asignación de memoria.
-- **Escenario de fragmentación**: botón que carga varios programas y
-  libera algunos intercalados, para provocar fragmentación externa
-  visible de inmediato (útil para ver el efecto de la compactación en
-  particiones dinámicas).
-- **Escenario no contiguo**: en segmentación, prepara huecos alrededor
-  de otra instancia y carga `Hoja de cálculo 1` con segmentos físicos
-  separados. También abre `Hoja de cálculo 2` para mostrar que dos copias
-  del mismo programa tienen asignaciones independientes. El escenario
-  reemplaza las instancias cargadas y conserva el catálogo de programas.
+## Estructura
+
+| Archivo | Responsabilidad |
+| --- | --- |
+| `index.html` | Controles y paneles del simulador. |
+| `css/style.css` y `css/desktop.css` | Distribución y estilo de consola. |
+| `js/script.js` | Algoritmos de asignación, mapa y bitácora. |
+| `entregables/` | Manuales e informe académico. |
 
 ## Licencia
 
-Sin licencia definida todavía — añade la que prefieras (MIT es una
-opción común para este tipo de material educativo) antes de hacerlo
-público si te importa dejarlo explícito.
+Distribuido bajo la [licencia MIT](LICENSE).

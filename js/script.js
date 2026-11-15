@@ -765,7 +765,7 @@
     var p = b.pid !== null ? prog(b.pid) : null;
     var lim = b.base + b.size - 1;
     var html = '<dl class="dl">';
-    html += '<dt>Bloque</dt><dd style="font-family:\'IBM Plex Sans\',sans-serif">' +
+    html += '<dt>Bloque</dt><dd>' +
       (b.tipo === "so" ? "Sistema operativo (residente)" :
        b.tipo === "reservado" ? "Zona no particionada" :
        b.tipo === "particion" ? "Partición " + b.idx + (p ? " (estática)" : " (estática, libre)") :
@@ -773,7 +773,7 @@
     html += '<dt>Rango</dt><dd>' + hex(b.base) + " – " + hex(lim) + '</dd>';
     html += '<dt>Tamaño</dt><dd>' + fmt(b.size) + " (" + miles(b.size) + " B)" + '</dd>';
     if (p){
-      html += '<dt>Proceso</dt><dd style="font-family:\'IBM Plex Sans\',sans-serif">' + p.etq + " · " + esc(p.nombre) + '</dd>';
+      html += '<dt>Proceso</dt><dd>' + p.etq + " · " + esc(p.nombre) + '</dd>';
       html += '<dt>Registro base</dt><dd>' + hex(p.base) + '</dd>';
       html += '<dt>Registro límite</dt><dd>' + hex(p.size) + " (" + fmt(p.size) + ")" + '</dd>';
       var fi = b.size - p.size;
@@ -1080,6 +1080,13 @@
      añadir programas, clicks sobre bloques del mapa) con las
      funciones del modelo, y termina cada uno llamando a
      render() para reflejar el cambio. */
+  document.querySelectorAll(".menubar a").forEach(function(link){
+    link.addEventListener("click", function(){
+      var panel = document.getElementById(link.hash.slice(1));
+      if (panel instanceof HTMLDetailsElement) panel.open = true;
+    });
+  });
+
   document.querySelectorAll(".tab").forEach(function(t){
     t.addEventListener("click", function(){
       if (cfg.metodo === t.dataset.metodo) return;

@@ -18,29 +18,26 @@
   ============================================================
 -->
 <!doctype html>
-<html>
+<html lang="es" data-theme="light">
 <head>
-  <meta charset="utf8">
+  <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
   <title>MemLab 16 MiB</title>
-  <style>
-    :root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
-    html{scroll-padding-top:env(safe-area-inset-top,0px)}
-    body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#faf9f5;color:#141413}
-    img{max-width:100%}
-    [hidden]:not([hidden=until-found i]){display:none!important}
-  </style>
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;450;500;600&display=swap">
   <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/desktop.css">
 </head>
 <body>
 
 <div class="wrap">
   <header class="top">
     <div class="top-in">
-      <h1>MemLab <span class="u">16 MiB</span></h1>
-      <div class="spec mono">2<sup>24</sup> B direccionables · <b>0x000000 – 0xFFFFFF</b> · gestión de memoria</div>
+      <h1><span class="memory-icon" aria-hidden="true"></span> MemLab · Administración de memoria</h1>
+      <nav class="menubar" aria-label="Paneles del simulador">
+        <a href="#configuracion">Configuración</a>
+        <a href="#mapa-panel">Mapa</a>
+        <a href="#programas">Programas</a>
+        <a href="#bitacora">Bitácora</a>
+      </nav>
       <div class="top-actions">
         <button class="btn sm" id="btn-escenario">Escenario de fragmentación</button>
         <button class="btn sm" id="btn-escenario-nc" hidden>Escenario no contiguo</button>
@@ -54,33 +51,30 @@
     <div class="method-heading">Memoria contigua <span>Un programa ocupa un solo bloque físico</span></div>
     <div class="tabs" role="group" aria-label="Métodos de memoria contigua">
       <button class="tab" data-metodo="fija" aria-pressed="true">
-        <span class="tt">1 · Estáticas de tamaño fijo</span>
-        <span class="ts">Particiones iguales definidas al arrancar</span>
+        <span class="tt" title="Particiones iguales definidas al arrancar">Fijas</span>
       </button>
       <button class="tab" data-metodo="variable" aria-pressed="false">
-        <span class="tt">2 · Estáticas de tamaño variable</span>
-        <span class="ts">Tabla de particiones de distinto tamaño</span>
+        <span class="tt" title="Tabla de particiones de distinto tamaño">Variables</span>
       </button>
       <button class="tab" data-metodo="dinamica" aria-pressed="false">
-        <span class="tt">3 · Particiones dinámicas</span>
-        <span class="ts">Huecos a medida, con y sin compactación</span>
+        <span class="tt" title="Huecos a medida, con y sin compactación">Dinámicas</span>
       </button>
     </div>
     <div class="method-heading">Memoria no contigua <span>Las partes de un programa pueden ocupar direcciones físicas separadas</span></div>
     <div class="tabs tabs-nc" role="group" aria-label="Métodos de memoria no contigua">
       <button class="tab" data-metodo="segmentacion" aria-pressed="false">
-        <span class="tt">4 · Segmentación</span>
-        <span class="ts">Seis segmentos · mejor ajuste por segmento · tabla de direcciones</span>
+        <span class="tt" title="Seis segmentos · mejor ajuste por segmento · tabla de direcciones">Segmentación</span>
       </button>
       <button class="tab" data-metodo="paginacion" aria-pressed="false">
-        <span class="tt">5 · Paginación</span>
-        <span class="ts">Marcos de tamaño fijo · tablas de páginas por proceso · asignación no contigua</span>
+        <span class="tt" title="Marcos de tamaño fijo · tablas de páginas por proceso · asignación no contigua">Paginación</span>
       </button>
     </div>
 
     <div class="kpis" id="kpis"></div>
 
-    <div class="panelrow">
+    <details class="console-section" id="configuracion">
+      <summary>Configuración y asignación</summary>
+      <div class="panelrow">
       <div class="card">
         <div class="hd"><h2>Configuración</h2><span class="note" id="cfg-note"></span></div>
         <div class="bd">
@@ -154,36 +148,37 @@
       </div>
 
     </div>
+    </details>
   </section>
 
   <div class="main">
-    <div class="mapwrap">
-      <div class="card">
-        <div class="hd"><h2>Mapa de memoria</h2><span class="note mono" id="map-note"></span></div>
-        <div class="legend">
-          <span><i class="i-so"></i>S.O.</span>
-          <span><i class="i-libre"></i>Libre</span>
-          <span><i class="i-frag"></i>Frag. interna</span>
-          <span><i class="i-res"></i>No particionado</span>
-          <span id="legend-segmento" hidden><i class="i-seg"></i>Segmentos del programa seleccionado</span>
-        </div>
-        <div class="bd" style="padding:10px">
-          <div class="mapa" id="mapa" aria-label="Bloques de memoria de 0x000000 a 0xFFFFFF"></div>
+    <div class="console-panes">
+      <div class="mapwrap" id="mapa-panel">
+        <div class="card">
+          <div class="hd"><h2>Mapa de memoria</h2><span class="note mono" id="map-note"></span></div>
+          <div class="legend">
+            <span><i class="i-so"></i>S.O.</span>
+            <span><i class="i-libre"></i>Libre</span>
+            <span><i class="i-frag"></i>Frag. interna</span>
+            <span><i class="i-res"></i>No particionado</span>
+            <span id="legend-segmento" hidden><i class="i-seg"></i>Segmentos del programa seleccionado</span>
+          </div>
+          <div class="bd" style="padding:10px">
+            <div class="physical-view">
+              <div class="memory-device"><strong>Memoria física</strong><span>16 MiB</span><span>En línea</span></div>
+              <div class="mapa" id="mapa" tabindex="0" role="region" aria-label="Bloques de memoria de 0x000000 a 0xFFFFFF"></div>
+            </div>
+          </div>
         </div>
       </div>
-    </div>
 
-    <div style="display:grid;gap:16px;min-width:0">
-      <div class="card" style="order:2">
-        <div class="hd"><h2 id="detalle-title">Bloque seleccionado</h2><span class="note" id="detalle-note">distribución interna de segmentos</span></div>
-        <div class="bd" id="detalle"></div>
-      </div>
+      <details class="card console-section block-detail">
+        <summary><span id="detalle-title">Bloque seleccionado</span><span class="note" id="detalle-note">distribución interna de segmentos</span></summary>
+        <div class="bd block-scroll" id="detalle" tabindex="0" role="region" aria-labelledby="detalle-title"></div>
+      </details>
 
-      <div class="card" style="order:1">
-        <div class="hd">
-          <h2>Programas simulados</h2>
-          <span class="note" id="prog-note"></span>
-        </div>
+      <details class="card console-section" id="programas">
+        <summary>Programas simulados<span class="note" id="prog-note"></span></summary>
         <div class="bd">
           <div class="seglegend" id="prog-seglegend" style="margin-bottom:10px">
             <span><i class="s-cod"></i>Código</span>
@@ -191,7 +186,7 @@
             <span><i class="s-pil"></i>Pila</span>
             <span><i class="s-hea"></i>Montículo (heap)</span>
           </div>
-          <div class="tblscroll">
+          <div class="tblscroll program-scroll" tabindex="0" role="region" aria-label="Tabla desplazable de programas">
             <table class="tbl" id="tabla-progs">
               <thead>
                 <tr>
@@ -233,19 +228,19 @@
             </div>
           </details>
         </div>
-      </div>
+      </details>
 
-      <div class="card" id="frame-card" style="order:3" hidden>
+      <div class="card" id="frame-card" hidden>
         <div class="hd"><h2>Tabla global de marcos</h2><span class="note" id="frame-note"></span></div>
         <div class="bd"><div class="tblscroll frame-scroll"><table class="tbl" id="tabla-marcos">
           <thead><tr><th>Marco</th><th>Base física</th><th>Estado</th><th>Programa</th><th>Página lógica</th></tr></thead><tbody></tbody>
         </table></div></div>
       </div>
 
-      <div class="card" style="order:4">
-        <div class="hd"><h2>Bitácora del gestor</h2><span class="note">qué ocurrió y por qué · más reciente primero</span></div>
-        <div class="log" id="log" role="log" aria-live="polite"></div>
-      </div>
+      <details class="console-section" id="bitacora">
+        <summary>Bitácora del gestor</summary>
+        <div class="log" id="log" role="log" aria-live="polite" tabindex="0" aria-label="Eventos recientes"></div>
+      </details>
     </div>
   </div>
 
